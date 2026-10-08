@@ -1,0 +1,314 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: transparent;
+  color: #1e293b;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Prevent any scrollbars from appearing */
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+button {
+  font-family: inherit;
+}
+
+.game-window {
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  /* Muted cream / light gray retro widget frame */
+  background: linear-gradient(180deg, #ece9e2 0%, #dedbd2 100%);
+  border: 1px solid #7a889b;
+  border-radius: 8px;
+
+  /* Subtle border highlight and soft desktop shadow */
+  box-shadow:
+    0 10px 28px rgba(15, 23, 42, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Draggable dark charcoal-blue title bar */
+.title-bar {
+  height: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px 0 12px;
+
+  /* Dark charcoal-blue accent */
+  background: linear-gradient(180deg, #253346 0%, #1a2433 100%);
+  border-bottom: 1px solid #111822;
+
+  color: #e2e8f0;
+  cursor: grab;
+  -webkit-app-region: drag;
+}
+
+.title-bar:active {
+  cursor: grabbing;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #e8edf5;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.title-icon {
+  font-size: 12px;
+  color: #7da2cc; /* steel blue accent */
+  display: flex;
+  align-items: center;
+}
+
+.title-text {
+  line-height: 1;
+}
+
+.close-button {
+  width: 22px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: #94a5bd;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.close-button:hover {
+  background-color: #c53939;
+  color: #ffffff;
+}
+
+.close-button:active {
+  background-color: #991b1b;
+  color: #ffffff;
+}
+
+/* Compact layout area */
+.game-content {
+  flex: 1;
+  width: 100%;
+  padding: 10px 14px 10px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+/* 4x4 sliding puzzle board */
+.puzzle-board {
+  width: 236px;
+  height: 236px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 4px;
+  padding: 6px;
+
+  /* Recessed tray */
+  background: #d1cec5;
+  border: 1px solid #aba79a;
+  border-radius: 6px;
+
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Individual puzzle tiles */
+.tile {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Tasteful muted slate-blue tile */
+  background: linear-gradient(180deg, #4d6380 0%, #3a4c63 100%);
+  border: 1px solid #2a3748;
+  border-radius: 4px;
+
+  color: #f8fafc;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: inherit;
+  text-shadow: 0 1px 2px rgba(10, 16, 26, 0.6);
+
+  box-shadow:
+    0 2px 0 #202b39,
+    0 2px 3px rgba(15, 23, 42, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  cursor: pointer;
+  transition: filter 0.1s ease, transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.tile:hover:not(:disabled):not(.empty) {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow:
+    0 3px 0 #202b39,
+    0 3px 5px rgba(15, 23, 42, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.tile:active:not(:disabled):not(.empty) {
+  transform: translateY(1px);
+  box-shadow:
+    0 1px 0 #202b39,
+    inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.tile.empty {
+  background: #c0beb4;
+  border: 1px solid #aba79a;
+  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.18);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Bottom stats row (Moves & Time) */
+.stats {
+  width: 236px;
+  height: 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+
+  background: #d8d5cb;
+  border: 1px solid #b8b5a8;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+
+  font-size: 11px;
+  font-weight: 600;
+  color: #475569;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.stat-item strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a2433; /* Dark charcoal-blue */
+  font-family: inherit;
+  margin-left: 3px;
+}
+
+/* Control buttons row */
+.controls {
+  width: 236px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.controls button {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #8e9bb0;
+  border-radius: 4px;
+
+  background: linear-gradient(180deg, #fbfbfb 0%, #dfe3e9 100%);
+  color: #1e293b;
+
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+
+  cursor: pointer;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  transition: background 0.1s ease, border-color 0.1s ease, transform 0.08s ease;
+}
+
+.controls button:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #eaedf3 100%);
+  border-color: #64748b;
+}
+
+.controls button:active,
+.controls button.active {
+  background: linear-gradient(180deg, #d2d7e0 0%, #e2e6ec 100%);
+  border-color: #64748b;
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* Compact victory banner */
+.win-message {
+  width: 236px;
+  padding: 3px 6px;
+  text-align: center;
+  border-radius: 4px;
+
+  background: #d8e6d2;
+  border: 1px solid #8fad82;
+  color: #24461c;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
