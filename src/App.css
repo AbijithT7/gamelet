@@ -1,28 +1,75 @@
+/* ==========================================================================
+   Gamelet Modern-Retro Desktop Toy Theme & Design Tokens
+   Target Window Dimensions: 260px x 295px (Zero-scroll compact widget)
+   ========================================================================== */
+
+:root {
+  /* Frame & Chassis: Smoked Walnut Bronze */
+  --chassis-bg: linear-gradient(165deg, #241c17 0%, #1b1511 48%, #14100c 100%);
+  --chassis-border: rgba(212, 175, 55, 0.22);
+  --chassis-border-highlight: rgba(255, 235, 190, 0.08);
+  --chassis-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.35);
+
+  /* Honey-Gold & Warm Brass Accents */
+  --gold-accent: #d4af37;
+  --gold-accent-hover: #f3d47c;
+  --gold-muted: #9e8248;
+  --gold-glow: rgba(212, 175, 55, 0.16);
+
+  /* Recessed Board / Viewport (Reusable for Snake, 2048, Memory) */
+  --board-bg: #110e0c;
+  --board-border: rgba(212, 175, 55, 0.12);
+  --board-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.75), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+
+  /* Warm Ivory Physical Tiles */
+  --tile-bg: linear-gradient(170deg, #fdfaf4 0%, #f4ede1 45%, #ebe2d2 100%);
+  --tile-bg-hover: linear-gradient(170deg, #ffffff 0%, #f8f3e9 50%, #efe7d9 100%);
+  --tile-bg-active: linear-gradient(170deg, #eae1d1 0%, #ded4c2 100%);
+  --tile-border: rgba(140, 110, 80, 0.25);
+  --tile-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.32), 0 0.5px 1px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  /* Typography: Bold Espresso */
+  --text-espresso: #24140b;
+  --text-espresso-muted: #5e4333;
+  --slot-empty-bg: #0c0908;
+
+  /* Controls & Badges */
+  --ctrl-btn-bg: linear-gradient(180deg, #2a211a 0%, #1c1612 100%);
+  --ctrl-btn-border: rgba(212, 175, 55, 0.18);
+  --ctrl-btn-hover-border: rgba(212, 175, 55, 0.45);
+  --ctrl-btn-color: #d1b886;
+
+  /* Typography Stacks */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, sans-serif;
+  --font-mono: "Consolas", "SF Mono", "JetBrains Mono", monospace;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-:root {
-  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: transparent;
-  color: #1e293b;
-}
-
 html,
-body {
-  width: 100%;
-  height: 100%;
+body,
+#root {
+  width: 260px;
+  height: 295px;
   margin: 0;
   padding: 0;
   overflow: hidden;
   background: transparent;
   user-select: none;
   -webkit-user-select: none;
+  font-family: var(--font-sans);
+  color: var(--gold-accent);
 }
 
-/* Prevent any scrollbars from appearing */
+#root {
+  display: flex;
+}
+
+/* Prevent any scrollbars */
 ::-webkit-scrollbar {
   display: none;
   width: 0;
@@ -31,284 +78,397 @@ body {
 
 button {
   font-family: inherit;
+  border: none;
+  outline: none;
+  background: none;
 }
 
-.game-window {
-  width: 100%;
-  height: 100vh;
-  max-height: 100vh;
+/* ==========================================================================
+   Outer Widget Frame: 260px x 295px Fixed Chassis
+   Modern desktop-toy aesthetic in smoked walnut bronze with honey-gold accents
+   (Aliased for both .gadget-window and .gamelet-window for multi-game reuse)
+   ========================================================================== */
+.gadget-window,
+.gamelet-window {
+  width: 260px;
+  height: 295px;
+  max-width: 260px;
+  max-height: 295px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  padding: 7px 7px 8px 7px;
+  box-sizing: border-box;
 
-  /* Muted cream / light gray retro widget frame */
-  background: linear-gradient(180deg, #ece9e2 0%, #dedbd2 100%);
-  border: 1px solid #7a889b;
-  border-radius: 8px;
-
-  /* Subtle border highlight and soft desktop shadow */
+  background: var(--chassis-bg);
+  border: 1px solid var(--chassis-border);
+  border-radius: 9px;
   box-shadow:
-    0 10px 28px rgba(15, 23, 42, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.75),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+    var(--chassis-shadow),
+    inset 0 1px 0 var(--chassis-border-highlight);
+
+  cursor: default;
 }
 
-/* Draggable dark charcoal-blue title bar */
-.title-bar {
-  height: 32px;
-  min-height: 32px;
+/* ==========================================================================
+   Widget Header Bar (26px height)
+   Stats capsules on the left, precision control buttons on the right
+   ========================================================================== */
+.gadget-header,
+.gamelet-header {
+  height: 26px;
+  min-height: 26px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 8px 0 12px;
-
-  /* Dark charcoal-blue accent */
-  background: linear-gradient(180deg, #253346 0%, #1a2433 100%);
-  border-bottom: 1px solid #111822;
-
-  color: #e2e8f0;
+  margin-bottom: 7px;
   cursor: grab;
   -webkit-app-region: drag;
 }
 
-.title-bar:active {
+.gadget-header:active {
   cursor: grabbing;
 }
 
-.title {
+.header-left {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  color: #e8edf5;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  pointer-events: none;
+  gap: 4px;
+  -webkit-app-region: drag;
 }
 
-.title-icon {
-  font-size: 12px;
-  color: #7da2cc; /* steel blue accent */
-  display: flex;
+/* Digital Stats Badges (Timer & Moves/Score) */
+.timer-badge,
+.moves-badge {
+  display: inline-flex;
   align-items: center;
-}
-
-.title-text {
+  gap: 3.5px;
+  padding: 2.5px 5.5px;
+  background: rgba(14, 11, 9, 0.75);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.45);
+  color: var(--gold-accent);
   line-height: 1;
 }
 
-.close-button {
-  width: 22px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 3px;
-  background: transparent;
-  color: #94a5bd;
+.clock-icon {
+  width: 10.5px;
+  height: 10.5px;
+  stroke: var(--gold-accent);
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+.timer-digits,
+.moves-count {
+  font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
+  letter-spacing: 0.3px;
   line-height: 1;
+}
+
+.moves-label {
+  color: var(--gold-muted);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* Header Control Buttons Cluster */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  -webkit-app-region: no-drag;
+}
+
+.gadget-btn {
+  width: 21px;
+  height: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  padding: 0;
+
+  background: var(--ctrl-btn-bg);
+  border: 1px solid var(--ctrl-btn-border);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 235, 190, 0.08);
+
+  color: var(--ctrl-btn-color);
   cursor: pointer;
   -webkit-app-region: no-drag;
-  transition: background-color 0.12s ease, color 0.12s ease;
+  transition: all 0.12s ease;
 }
 
-.close-button:hover {
-  background-color: #c53939;
-  color: #ffffff;
+.gadget-btn svg {
+  width: 11px;
+  height: 11px;
+  display: block;
 }
 
-.close-button:active {
-  background-color: #991b1b;
-  color: #ffffff;
-}
-
-/* Compact layout area */
-.game-content {
-  flex: 1;
-  width: 100%;
-  padding: 10px 14px 10px 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  overflow: hidden;
-}
-
-/* 4x4 sliding puzzle board */
-.puzzle-board {
-  width: 236px;
-  height: 236px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
-  gap: 4px;
-  padding: 6px;
-
-  /* Recessed tray */
-  background: #d1cec5;
-  border: 1px solid #aba79a;
-  border-radius: 6px;
-
+.gadget-btn:hover {
+  background: linear-gradient(180deg, #33271f 0%, #231b15 100%);
+  border-color: var(--ctrl-btn-hover-border);
+  color: var(--gold-accent-hover);
   box-shadow:
-    inset 0 1px 3px rgba(0, 0, 0, 0.2),
-    0 1px 0 rgba(255, 255, 255, 0.8);
+    0 1.5px 3px rgba(0, 0, 0, 0.45),
+    0 0 6px var(--gold-glow);
 }
 
-/* Individual puzzle tiles */
-.tile {
+.gadget-btn:active,
+.gadget-btn.btn-active {
+  background: linear-gradient(180deg, #c59b3f 0%, #9e7b28 100%);
+  border-color: #dfb558;
+  color: #171004;
+  transform: translateY(0.5px);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+/* Minimalist Window Close Button */
+.gadget-btn.btn-close {
+  background: linear-gradient(180deg, #261b17 0%, #19110e 100%);
+  border-color: rgba(180, 80, 70, 0.22);
+  color: #ba8c80;
+}
+
+.gadget-btn.btn-close:hover {
+  background: linear-gradient(180deg, #aa2c2c 0%, #851c1c 100%);
+  border-color: #c93b3b;
+  color: #ffffff;
+  box-shadow:
+    0 1.5px 4px rgba(170, 44, 44, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.gadget-btn.btn-close:active {
+  background: linear-gradient(180deg, #701414 0%, #8f1e1e 100%);
+  border-color: #5c1010;
+  transform: translateY(0.5px);
+}
+
+/* ==========================================================================
+   Widget Body & Recessed Game Tray (246px x 246px)
+   ========================================================================== */
+.gadget-body {
   width: 100%;
-  height: 100%;
-  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-app-region: drag;
+}
+
+/* Recessed 4x4 Puzzle Board */
+.puzzle-board {
+  position: relative;
+  width: 246px;
+  height: 246px;
+  display: grid;
+  grid-template-columns: repeat(4, 56px);
+  grid-template-rows: repeat(4, 56px);
+  gap: 4px;
+  padding: 4px;
+  box-sizing: border-box;
+
+  background: var(--board-bg);
+  border: 1px solid var(--board-border);
+  border-radius: 6px;
+  box-shadow:
+    var(--board-shadow),
+    0 1px 0 rgba(255, 235, 190, 0.06);
+
+  -webkit-app-region: no-drag;
+}
+
+/* ==========================================================================
+   Tactile Warm Ivory Tiles with Bold Espresso Numerals (56px x 56px)
+   ========================================================================== */
+.tile {
+  width: 56px;
+  height: 56px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  /* Tasteful muted slate-blue tile */
-  background: linear-gradient(180deg, #4d6380 0%, #3a4c63 100%);
-  border: 1px solid #2a3748;
-  border-radius: 4px;
+  background: var(--tile-bg);
+  border: 1px solid var(--tile-border);
+  border-radius: 5px;
 
-  color: #f8fafc;
-  font-size: 17px;
-  font-weight: 700;
-  font-family: inherit;
-  text-shadow: 0 1px 2px rgba(10, 16, 26, 0.6);
+  color: var(--text-espresso);
+  font-family: var(--font-sans);
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 
-  box-shadow:
-    0 2px 0 #202b39,
-    0 2px 3px rgba(15, 23, 42, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: var(--tile-shadow);
 
   cursor: pointer;
-  transition: filter 0.1s ease, transform 0.08s ease, box-shadow 0.08s ease;
+  -webkit-app-region: no-drag;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
 }
 
 .tile:hover:not(:disabled):not(.empty) {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
+  background: var(--tile-bg-hover);
+  transform: translateY(-0.75px);
   box-shadow:
-    0 3px 0 #202b39,
-    0 3px 5px rgba(15, 23, 42, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    0 2.5px 5px rgba(0, 0, 0, 0.38),
+    0 0.5px 1.5px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 .tile:active:not(:disabled):not(.empty) {
-  transform: translateY(1px);
+  background: var(--tile-bg-active);
+  transform: translateY(0.5px);
   box-shadow:
-    0 1px 0 #202b39,
-    inset 0 1px 2px rgba(0, 0, 0, 0.3);
+    0 0.5px 1px rgba(0, 0, 0, 0.35),
+    inset 0 1px 2px rgba(45, 25, 12, 0.25);
 }
 
+/* Empty Tile Slot: Deep recessed bed cutout */
 .tile.empty {
-  background: #c0beb4;
-  border: 1px solid #aba79a;
-  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.18);
+  background: var(--slot-empty-bg);
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.85),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.4);
   cursor: default;
   pointer-events: none;
 }
 
-/* Bottom stats row (Moves & Time) */
-.stats {
-  width: 236px;
-  height: 26px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 10px;
-
-  background: #d8d5cb;
-  border: 1px solid #b8b5a8;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
-
-  font-size: 11px;
-  font-weight: 600;
-  color: #475569;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-}
-
-.stat-item strong {
-  font-size: 13px;
-  font-weight: 700;
-  color: #1a2433; /* Dark charcoal-blue */
-  font-family: inherit;
-  margin-left: 3px;
-}
-
-/* Control buttons row */
-.controls {
-  width: 236px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.controls button {
-  height: 28px;
+/* ==========================================================================
+   Overlays: Smoked Translucent Scrim with Gold/Ivory Accents
+   ========================================================================== */
+.board-overlay {
+  position: absolute;
+  inset: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border: 1px solid #8e9bb0;
+  background: rgba(14, 11, 9, 0.82);
+  backdrop-filter: blur(2.5px);
   border-radius: 4px;
-
-  background: linear-gradient(180deg, #fbfbfb 0%, #dfe3e9 100%);
-  color: #1e293b;
-
-  font-size: 12px;
-  font-weight: 600;
-  font-family: inherit;
-
+  z-index: 10;
   cursor: pointer;
-  box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-
-  transition: background 0.1s ease, border-color 0.1s ease, transform 0.08s ease;
+  animation: overlayFadeIn 0.12s ease-out;
 }
 
-.controls button:hover {
-  background: linear-gradient(180deg, #ffffff 0%, #eaedf3 100%);
-  border-color: #64748b;
-}
-
-.controls button:active,
-.controls button.active {
-  background: linear-gradient(180deg, #d2d7e0 0%, #e2e6ec 100%);
-  border-color: #64748b;
-  transform: translateY(1px);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
-}
-
-/* Compact victory banner */
-.win-message {
-  width: 236px;
-  padding: 3px 6px;
-  text-align: center;
-  border-radius: 4px;
-
-  background: #d8e6d2;
-  border: 1px solid #8fad82;
-  color: #24461c;
-
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  animation: fadeIn 0.2s ease-in-out;
-}
-
-@keyframes fadeIn {
+@keyframes overlayFadeIn {
   from {
     opacity: 0;
-    transform: translateY(2px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
+}
+
+/* Paused State Capsule */
+.overlay-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 16px;
+  background: linear-gradient(180deg, #261e18 0%, #1a1410 100%);
+  border: 1px solid var(--gold-accent);
+  border-radius: 6px;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.65),
+    0 0 10px var(--gold-glow),
+    inset 0 1px 0 rgba(255, 235, 190, 0.12);
+  color: var(--gold-accent);
+}
+
+.overlay-title {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.overlay-subtitle {
+  font-size: 10px;
+  font-weight: 600;
+  color: #a89472;
+}
+
+/* Solved Celebration Card */
+.victory-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 16px;
+  background: linear-gradient(170deg, #fdfaf4 0%, #f4ede1 100%);
+  border: 1.5px solid var(--gold-accent);
+  border-radius: 7px;
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.7),
+    0 0 14px var(--gold-glow),
+    inset 0 1px 0 #ffffff;
+  color: var(--text-espresso);
+  text-align: center;
+  cursor: default;
+}
+
+.victory-trophy {
+  width: 26px;
+  height: 26px;
+  stroke: var(--gold-accent);
+  fill: rgba(212, 175, 55, 0.15);
+}
+
+.victory-title {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: var(--text-espresso);
+}
+
+.victory-stats {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-espresso-muted);
+  font-family: var(--font-mono);
+}
+
+.victory-btn {
+  margin-top: 3px;
+  padding: 4.5px 14px;
+  background: linear-gradient(180deg, #281f18 0%, #1a1410 100%);
+  border: 1px solid var(--gold-accent);
+  border-radius: 4px;
+  color: var(--gold-accent);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  box-shadow:
+    0 1.5px 3px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 235, 190, 0.1);
+  transition: all 0.1s ease;
+}
+
+.victory-btn:hover {
+  background: linear-gradient(180deg, #33271f 0%, #221a14 100%);
+  color: var(--gold-accent-hover);
+  border-color: var(--gold-accent-hover);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    0 0 8px var(--gold-glow);
+  transform: translateY(-0.5px);
+}
+
+.victory-btn:active {
+  background: linear-gradient(180deg, #c59b3f 0%, #9e7b28 100%);
+  color: #171004;
+  transform: translateY(0.5px);
 }
