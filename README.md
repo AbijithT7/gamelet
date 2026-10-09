@@ -9,22 +9,27 @@
 </p>
 
 <p align="center">
-  <a href="Gamelet-Setup.exe"><b>⬇️ Download Gamelet-Setup.exe</b></a>
+  <a href="https://github.com/AbijithT7/gamelet/raw/main/Gamelet-Setup.exe"><b>⬇️ Direct Download: Gamelet-Setup.exe</b></a>
 </p>
 
 Gamelet is a lightweight Windows desktop application inspired by classic desktop gadgets and executive desktop toys. It delivers small, offline mini-games in an ultra-compact widget window (**260 × 295 px**), without opening a browser or launching a heavy gaming client.
 
 ---
 
-## 📥 Quick Download (Windows)
+## 📥 Direct Download (Windows)
 
-Pre-built binaries are available directly in the repository for instant access:
+Click any link below to download directly in your browser:
 
-| Download | Type | Size | Details |
+| File | Type | Size | Direct Download |
 | :--- | :--- | :--- | :--- |
-| **[Gamelet-Setup.exe](Gamelet-Setup.exe)** | **NSIS Installer** | ~1.4 MB | **Recommended.** Installs cleanly with desktop & start menu shortcuts |
-| **[installer/gamelet.exe](installer/gamelet.exe)** | **Portable Executable** | ~4.1 MB | Zero installation required — run immediately |
-| **[installer/Gamelet_0.1.0_x64_en-US.msi](installer/Gamelet_0.1.0_x64_en-US.msi)** | **MSI Package** | ~2.0 MB | Standard Windows Installer package |
+| **Gamelet-Setup.exe** | **NSIS Installer** | ~1.4 MB | **[Download Gamelet-Setup.exe (Direct)](https://github.com/AbijithT7/gamelet/raw/main/Gamelet-Setup.exe)** |
+| **gamelet.exe** | **Portable Standalone** | ~4.1 MB | **[Download gamelet.exe (Direct)](https://github.com/AbijithT7/gamelet/raw/main/installer/gamelet.exe)** |
+| **Gamelet MSI** | **Windows Installer Package** | ~2.0 MB | **[Download Gamelet MSI (Direct)](https://github.com/AbijithT7/gamelet/raw/main/installer/Gamelet_0.1.0_x64_en-US.msi)** |
+
+> [!TIP]
+> **Downloading from GitHub**:
+> - Clicking the **Direct Download** links above will automatically start the file download.
+> - If you click on `Gamelet-Setup.exe` directly in the GitHub file browser list, GitHub opens the file preview page — simply click the **Download** button on the right side of the file header.
 
 ---
 
